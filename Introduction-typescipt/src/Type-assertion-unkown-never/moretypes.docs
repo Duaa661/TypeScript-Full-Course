@@ -1,0 +1,265 @@
+1. Type Assertion
+Definition
+
+Type Assertion tells TypeScript:
+
+"Trust me, I know the type better than you."
+
+It does not change the actual type at runtime. It only helps the compiler.
+
+Syntax
+Method 1
+let value: any = "Hello";
+
+let len = (value as string).length;
+Method 2
+let value: any = "Hello";
+
+let len = (<string>value).length;
+
+(Used less often because it conflicts with JSX in React.)
+
+Why Use It?
+
+Sometimes TypeScript cannot determine the exact type.
+
+const input = document.getElementById("username");
+
+input.value = "John"; // Error
+
+Because:
+
+input: HTMLElement | null
+
+TypeScript doesn't know it's an input element.
+
+Use assertion:
+
+const input = document.getElementById(
+  "username"
+) as HTMLInputElement;
+
+input.value = "John";
+Interview Question
+Q1: Does type assertion perform type conversion?
+
+Answer: No
+
+let num = "123" as any;
+
+This does not convert string into number.
+
+Type assertion only affects TypeScript checking.
+
+Q2: Difference between Type Casting and Type Assertion?
+Type Casting	Type Assertion
+Runtime conversion	Compile-time only
+Changes value	Doesn't change value
+JS operation	TS feature
+
+Example:
+
+Number("123") // casting
+"123" as string // assertion
+2. Unknown Type
+Definition
+
+unknown is a safer version of any.
+
+let data: unknown;
+
+You can store anything inside it.
+
+data = "hello";
+data = 10;
+data = true;
+Why Use Unknown?
+
+With any:
+
+let value: any = "Hello";
+
+value.toUpperCase(); // No error
+value.xyz();         // No error
+
+TypeScript allows everything.
+
+With unknown:
+
+let value: unknown = "Hello";
+
+value.toUpperCase();
+
+Error:
+
+Object is of type 'unknown'
+
+Must check first.
+
+if (typeof value === "string") {
+    console.log(value.toUpperCase());
+}
+Example
+function processData(data: unknown) {
+    if (typeof data === "string") {
+        console.log(data.toUpperCase());
+    }
+}
+When Used?
+
+Mostly:
+
+API responses
+User input
+JSON data
+External libraries
+
+Example:
+
+const response: unknown =
+    JSON.parse(jsonData);
+Interview Questions
+Q1: Difference between Any and Unknown?
+any	unknown
+Turns off type checking	Keeps type safety
+Can access properties directly	Must narrow type first
+Unsafe	Safe
+
+Example:
+
+let a: any = "Hello";
+a.toUpperCase();
+
+Works.
+
+let b: unknown = "Hello";
+b.toUpperCase();
+
+Error.
+
+Q2: Can unknown be assigned to string?
+let value: unknown = "hello";
+
+let str: string = value;
+
+❌ Error
+
+Need checking:
+
+if (typeof value === "string") {
+    let str: string = value;
+}
+3. Never Type
+Definition
+
+never means:
+
+This value will never exist.
+
+Used when a function never returns.
+
+Example 1: Infinite Loop
+function runForever(): never {
+    while (true) {}
+}
+
+Function never finishes.
+
+Example 2: Throw Error
+function throwError(msg: string): never {
+    throw new Error(msg);
+}
+
+Function never returns.
+
+Why Use Never?
+
+To represent impossible states.
+
+Example
+type Shape =
+    | { kind: "circle"; radius: number }
+    | { kind: "square"; side: number };
+
+function getArea(shape: Shape) {
+    switch (shape.kind) {
+        case "circle":
+            return Math.PI * shape.radius ** 2;
+
+        case "square":
+            return shape.side * shape.side;
+
+        default:
+            const x: never = shape;
+            return x;
+    }
+}
+
+If a new shape is added later:
+
+{ kind: "triangle" }
+
+TypeScript immediately shows an error in the never assignment.
+
+This is called Exhaustive Type Checking.
+
+Interview Questions
+Q1: Difference between Void and Never?
+void	never
+Function completes	Function never completes
+Returns undefined	Returns nothing at all
+
+Example:
+
+function print(): void {
+    console.log("Hello");
+}
+function error(): never {
+    throw new Error();
+}
+Q2: Can Never Be Assigned To Any Type?
+
+Yes.
+
+let n: never;
+
+let s: string = n;
+let num: number = n;
+
+Because never represents a value that can never occur.
+
+Most Asked Interview Question
+let value: unknown = "Hello";
+
+console.log(value.toUpperCase());
+
+Output?
+
+Answer: Compilation Error
+
+Need:
+
+if (typeof value === "string") {
+    console.log(value.toUpperCase());
+}
+Quick Revision
+Type Assertion
+const input = document.getElementById(
+  "name"
+) as HTMLInputElement;
+
+Used when you know the type better than TypeScript.
+
+Unknown
+let data: unknown;
+
+Safer version of any.
+
+Must narrow type before use.
+
+Never
+function throwError(): never {
+    throw new Error();
+}
+
+Used when a function never returns or for exhaustive checks.
