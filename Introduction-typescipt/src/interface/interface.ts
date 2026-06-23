@@ -23,8 +23,31 @@ class MasalaChai implements TeaRecipe{
     milk = 50;
 }
 
-type Cupsize = "small" | "large"
+interface Cupsize {
+    size: "small" | "large"
+}
 
 class Chai implements Cupsize {
-
+  size:"small" | "large"="large"
 }
+
+type TeaType = "masala" | "gimger" | "lemon"
+
+
+function orderChai(t: TeaType) {
+    console.log(t)
+}
+
+// intersection
+
+type config = {
+     appName: string
+    version:number
+}
+
+const cfg: config = {
+    appName: "Masterji",
+    version:3.4
+}
+
+cfg.appName ="fif"

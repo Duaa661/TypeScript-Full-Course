@@ -1,0 +1,257 @@
+An Interface is a blueprint for an object. It defines the structure (properties and methods) that an object must have.
+
+interface User {
+    name: string;
+    age: number;
+}
+
+Now any object of type User must contain name and age.
+
+const user: User = {
+    name: "Dushyant",
+    age: 25
+};
+Why Use Interfaces?
+Better type safety
+Improves code readability
+Reusability
+Defines contracts between components/classes
+
+Example:
+
+interface Employee {
+    id: number;
+    name: string;
+}
+
+function printEmployee(emp: Employee) {
+    console.log(emp.name);
+}
+Optional Properties
+
+Use ? when a property is not required.
+
+interface User {
+    name: string;
+    age?: number;
+}
+
+Valid:
+
+const user: User = {
+    name: "John"
+};
+Readonly Properties
+
+Cannot be modified after initialization.
+
+interface User {
+    readonly id: number;
+    name: string;
+}
+
+const user: User = {
+    id: 1,
+    name: "John"
+};
+
+user.id = 2; // Error
+Function Interface
+
+Interfaces can define function signatures.
+
+interface Add {
+    (a: number, b: number): number;
+}
+
+const sum: Add = (x, y) => x + y;
+Interface with Methods
+interface Person {
+    name: string;
+    greet(): void;
+}
+
+const p: Person = {
+    name: "John",
+    greet() {
+        console.log("Hello");
+    }
+};
+Extending Interfaces
+
+One interface can inherit another.
+
+interface Person {
+    name: string;
+}
+
+interface Employee extends Person {
+    salary: number;
+}
+
+Usage:
+
+const emp: Employee = {
+    name: "John",
+    salary: 50000
+};
+Multiple Interface Inheritance
+interface A {
+    name: string;
+}
+
+interface B {
+    age: number;
+}
+
+interface C extends A, B {
+    city: string;
+}
+const user: C = {
+    name: "John",
+    age: 25,
+    city: "Delhi"
+};
+Interface with Arrays
+interface User {
+    name: string;
+}
+
+const users: User[] = [
+    { name: "John" },
+    { name: "Sam" }
+];
+Interface with Classes
+
+Interfaces are commonly used with classes.
+
+interface Animal {
+    makeSound(): void;
+}
+
+class Dog implements Animal {
+    makeSound() {
+        console.log("Bark");
+    }
+}
+
+The class must implement all interface members.
+
+Interface vs Type Alias
+Interface
+interface User {
+    name: string;
+}
+Type
+type User = {
+    name: string;
+};
+
+Both look similar but have differences.
+
+Feature	Interface	Type
+Object Definition	✅	✅
+Extends	✅	✅
+Declaration Merging	✅	❌
+Union Types	❌	✅
+Primitive Types	❌	✅
+Most Important Interview Question
+What is Declaration Merging?
+
+Interfaces with the same name automatically merge.
+
+interface User {
+    name: string;
+}
+
+interface User {
+    age: number;
+}
+
+Becomes:
+
+interface User {
+    name: string;
+    age: number;
+}
+
+Usage:
+
+const user: User = {
+    name: "John",
+    age: 25
+};
+
+This is not possible with type aliases.
+
+Interface vs Type: Which One Should I Use?
+Use Interface When
+Defining object shapes
+Working with classes
+Designing APIs
+Need declaration merging
+interface User {
+    id: number;
+    name: string;
+}
+Use Type When
+Union types
+Tuple types
+Primitive aliases
+Complex type combinations
+type Status = "success" | "error" | "loading";
+Frequently Asked Interview Questions
+Q1: Can an interface extend multiple interfaces?
+
+Yes.
+
+interface A {
+    a: string;
+}
+
+interface B {
+    b: string;
+}
+
+interface C extends A, B {}
+Q2: Can a class implement multiple interfaces?
+
+Yes.
+
+interface A {
+    a(): void;
+}
+
+interface B {
+    b(): void;
+}
+
+class Test implements A, B {
+    a() {}
+    b() {}
+}
+Q3: Can interfaces contain implementation?
+
+No.
+
+interface User {
+    name: string;
+    greet(): void;
+}
+
+Only method signatures, not method bodies.
+
+Q4: What is the difference between extends and implements?
+Extends
+
+Used between interfaces/classes.
+
+interface Employee extends Person {}
+Implements
+
+Used by classes.
+
+class Dog implements Animal {}
+Interview One-Liner
+
+Interface = Defines the structure/contract of an object, class, or function and helps TypeScript enforce type safety at compile time.
